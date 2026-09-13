@@ -16,6 +16,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('NOTES'); // 'NOTES' | 'QUIZ'
   const [loadingStage, setLoadingStage] = useState('Reading document in browser...');
   const [showKeyModal, setShowKeyModal] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
   const [keyInputValue, setKeyInputValue] = useState(getApiKey());
 
   React.useEffect(() => {
