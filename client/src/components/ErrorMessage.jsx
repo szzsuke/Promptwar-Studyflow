@@ -4,15 +4,16 @@ export default function ErrorMessage({ error, onRetry, onReset }) {
   if (!error) return null;
 
   // Provide helpful context-specific guidance based on error keywords
-  const isNoTextError = error.toLowerCase().includes('scanned') || error.toLowerCase().includes('no readable text');
-  const isSizeError = error.toLowerCase().includes('exceeds') || error.toLowerCase().includes('15 mb');
-  const isApiKeyError = error.toLowerCase().includes('gemini_api_key') || error.toLowerCase().includes('api key');
-  const isConnectionError = error.toLowerCase().includes('failed to fetch') || error.toLowerCase().includes('connect') || error.toLowerCase().includes('offline') || error.toLowerCase().includes('network');
+  const isNoTextError = error.toLowerCase().includes('scanned') || error.toLowerCase().includes('no readable text') || error.toLowerCase().includes('selectable text');
+  const isSizeError = error.toLowerCase().includes('exceeds') || error.toLowerCase().includes('25 mb') || error.toLowerCase().includes('limit');
+  const isApiKeyError = error.toLowerCase().includes('api key') || error.toLowerCase().includes('authentication failed');
+  const isQuotaError = error.toLowerCase().includes('quota') || error.toLowerCase().includes('rate limit');
+  const isConnectionError = error.toLowerCase().includes('failed to fetch') || error.toLowerCase().includes('offline') || error.toLowerCase().includes('network') || error.toLowerCase().includes('timed out');
 
   return (
-    <div id="error-message-container" className="error-card">
+    <div id="error-message-container" className="error-card" role="alert">
       <div className="error-icon-wrapper">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10" />
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
@@ -23,30 +24,33 @@ export default function ErrorMessage({ error, onRetry, onReset }) {
         <h3 className="error-heading">Processing Issue</h3>
         <p className="error-text">{error}</p>
 
-        {isNoTextError && (
-          <div className="error-suggestion">
-            <strong>Tip:</strong> The PDF might contain rasterized scanned images of slides without an embedded digital text layer. Try exporting the presentation or document as a native text-based PDF.
-          </div>
-        )}
-
-        {isSizeError && (
-          <div className="error-suggestion">
-            <strong>Tip:</strong> Please compress the PDF or split it to keep the file under 15 MB.
-          </div>
-        )}
-
         {isApiKeyError && (
           <div className="error-suggestion">
-            <strong>Setup Required:</strong> Add your Google Gemini API key to <code>.env</code> in the project root:
-            <pre className="error-code-block">GEMINI_API_KEY=AIzaSy...</pre>
+            <strong>API Key Required:</strong> Click the <strong>Gemini Flash</strong> button in the top navigation bar to enter your free Google Gemini API key from <a href="https://aistudio.google.com/" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Google AI Studio</a>.
+          </div>
+        )}
+
+        {isQuotaError && (
+          <div className="error-suggestion">
+            <strong>Quota Notice:</strong> The Google Gemini free rate limit or quota was exceeded. Please wait a minute or configure your own personal API key in the top bar.
           </div>
         )}
 
         {isConnectionError && (
           <div className="error-suggestion">
-            <strong>Backend Server Offline:</strong> The web app could not reach the backend server at <code>http://localhost:5000</code>. Start both client and server concurrently with:
-            <pre className="error-code-block">npm run dev</pre>
-            <p style={{ marginTop: '0.4rem', fontSize: '0.85rem' }}>Or start the backend independently in a separate terminal: <code>npm run dev:server</code></p>
+            <strong>Network Connectivity:</strong> Unable to connect to Google Generative AI services from your browser. Please check your internet connection and try again.
+          </div>
+        )}
+
+        {isNoTextError && (
+          <div className="error-suggestion">
+            <strong>Scanned Document:</strong> The uploaded document contains scanned images without an embedded text layer. Please export the slides or document as a native text-based PDF or Word document.
+          </div>
+        )}
+
+        {isSizeError && (
+          <div className="error-suggestion">
+            <strong>Size Exceeded:</strong> Please compress the document or split it into smaller chapters under 25 MB.
           </div>
         )}
       </div>
@@ -59,7 +63,7 @@ export default function ErrorMessage({ error, onRetry, onReset }) {
         )}
         {onReset && (
           <button id="upload-different-btn" type="button" className="btn-primary-sm" onClick={onReset}>
-            Upload Another PDF
+            Upload Another Document
           </button>
         )}
       </div>

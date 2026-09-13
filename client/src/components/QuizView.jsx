@@ -60,11 +60,35 @@ export default function QuizView({ quiz, filename }) {
   const isCurrentCorrect = isCurrentAnswered && currentAnswer === currentQ.correctAnswerIndex;
   const percentage = Math.round((correctCount / totalQuestions) * 100);
 
+  // Keyboard navigation for interactive quiz
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      if (showScorecard) return;
+
+      const key = e.key.toLowerCase();
+      if (['1', '2', '3', '4'].includes(key)) {
+        const optIdx = parseInt(key, 10) - 1;
+        handleSelectOption(currentIndex, optIdx);
+      } else if (['a', 'b', 'c', 'd'].includes(key)) {
+        const optIdx = key.charCodeAt(0) - 97;
+        handleSelectOption(currentIndex, optIdx);
+      } else if (e.key === 'ArrowRight') {
+        handleNext();
+      } else if (e.key === 'ArrowLeft') {
+        handlePrev();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, selectedAnswers, showScorecard, totalQuestions]);
+
   return (
     <div id="quiz-view-container" className="quiz-view">
       {/* Stepper Progress Bar (Capsule Stepper) */}
       <div className="quiz-stepper-container">
-        <div className="quiz-stepper">
+        <div className="quiz-stepper" role="tablist" aria-label="Quiz question stepper">
           {quiz.map((q, idx) => {
             const isCurrent = idx === currentIndex && !showScorecard;
             const isAnswered = selectedAnswers[idx] !== undefined;
@@ -79,6 +103,9 @@ export default function QuizView({ quiz, filename }) {
                 key={idx}
                 id={`quiz-step-${idx}`}
                 type="button"
+                role="tab"
+                aria-selected={isCurrent}
+                aria-label={`Question ${idx + 1}: ${isAnswered ? (isCorrect ? 'Correct' : 'Incorrect') : 'Unanswered'}`}
                 className={stepClass}
                 onClick={() => {
                   setCurrentIndex(idx);
@@ -245,6 +272,9 @@ export default function QuizView({ quiz, filename }) {
                   key={optIdx}
                   id={`q${currentIndex}-option-${optIdx}`}
                   type="button"
+                  role="button"
+                  aria-pressed={isSelected}
+                  aria-label={`Option ${OPTION_LETTERS[optIdx]}: ${optionText}`}
                   className={optionClass}
                   onClick={() => handleSelectOption(currentIndex, optIdx)}
                   disabled={isCurrentAnswered}
@@ -252,10 +282,10 @@ export default function QuizView({ quiz, filename }) {
                   <span className="option-letter">{OPTION_LETTERS[optIdx]}</span>
                   <span className="option-text">{optionText}</span>
                   {isCurrentAnswered && isTargetCorrect && (
-                    <span className="option-check-icon">✓</span>
+                    <span className="option-check-icon" aria-label="Correct answer">✓</span>
                   )}
                   {isCurrentAnswered && isSelected && !isTargetCorrect && (
-                    <span className="option-cross-icon">✕</span>
+                    <span className="option-cross-icon" aria-label="Incorrect answer">✕</span>
                   )}
                 </button>
               );

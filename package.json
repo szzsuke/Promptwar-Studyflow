@@ -9,6 +9,7 @@
     "postinstall": "npm --prefix client install",
     "build": "npm --prefix client install && npm --prefix client run build",
     "preview": "npm --prefix client run preview",
-    "test": "npm --prefix client run build"
+    "test": "npm --prefix client test",
+    "test:build": "npm --prefix client run build"
   }
 }

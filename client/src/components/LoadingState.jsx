@@ -22,8 +22,8 @@ export default function LoadingState({ filename, customStage }) {
   const stage = customStage || DEFAULT_STAGES[currentStageIdx];
 
   return (
-    <div id="loading-state-container" className="loading-card">
-      <div className="loading-spinner-wrapper">
+    <div id="loading-state-container" className="loading-card" role="status" aria-live="polite">
+      <div className="loading-spinner-wrapper" aria-hidden="true">
         <div className="spinner-ring"></div>
       </div>
 

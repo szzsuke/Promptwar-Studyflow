@@ -16,8 +16,18 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('NOTES'); // 'NOTES' | 'QUIZ'
   const [loadingStage, setLoadingStage] = useState('Reading document in browser...');
   const [showKeyModal, setShowKeyModal] = useState(false);
-  const [showExportModal, setShowExportModal] = useState(false);
   const [keyInputValue, setKeyInputValue] = useState(getApiKey());
+
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (showKeyModal) setShowKeyModal(false);
+        if (showExportModal) setShowExportModal(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showKeyModal, showExportModal]);
 
   const handleGenerate = async (file, options = {}) => {
     setCurrentFile(file);
@@ -328,10 +338,16 @@ export default function App() {
 
       {/* API Key Configuration Modal */}
       {showKeyModal && (
-        <div className="ds-modal-overlay" onClick={() => setShowKeyModal(false)}>
+        <div
+          className="ds-modal-overlay"
+          onClick={() => setShowKeyModal(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="key-modal-title"
+        >
           <div className="ds-modal-box" onClick={(e) => e.stopPropagation()}>
             <div className="ds-modal-header">
-              <h4 className="ds-modal-title">Gemini API Key Configuration</h4>
+              <h4 id="key-modal-title" className="ds-modal-title">Gemini API Key Configuration</h4>
               <button
                 type="button"
                 className="ds-modal-close"
