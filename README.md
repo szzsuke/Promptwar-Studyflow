@@ -4,15 +4,17 @@ StudyFlow is a local-first, serverless AI study workbench designed with the **De
 1. **Condensed Revision Notes** structured into high-yield bullet points organized by sub-topic.
 2. **An Interactive 5-Question Multiple-Choice Quiz** with instant right/wrong evaluation, correct answer highlights, and grounded explanations.
 
+> 🚀 **Live Demo**: [https://studyflow-buddy.vercel.app](https://studyflow-buddy.vercel.app) (Mirror: [https://studyflow-workbench.vercel.app](https://studyflow-workbench.vercel.app))
+
 ---
 
-## 100% Client-Side RAG (No Backend Required)
+## 100% Client-Side Architecture (No Backend Required)
 
-Inspired by [`antter-ui/AI-Student-Buddy`](https://github.com/antter-ui/AI-Student-Buddy.git), StudyFlow runs **entirely in your browser without requiring a backend server**:
-- **In-Browser PDF Extraction**: Uses `pdfjs-dist` to parse PDF files directly into memory.
+StudyFlow runs **entirely in your browser without requiring a backend server**:
+- **Multi-Format Ingestion**: Parses PDFs (`pdfjs-dist`), Word docs (`.docx`), PowerPoint slide decks (`.pptx`), and text files directly in memory.
 - **Sliding-Window RAG Chunking**: Splits document pages into 300-word windows with 50-word overlaps, preserving exact page numbers.
 - **Lexical Relevance Retrieval**: Ranks chunks based on query density and semantic content.
-- **Direct Gemini Flash Synthesis**: Interacts directly with Google Generative Language REST APIs (`gemini-3.6-flash` with automatic fallback to `gemini-2.5-flash` and `gemini-1.5-flash`).
+- **Direct Gemini Flash Synthesis**: Interacts directly with Google Generative Language REST APIs.
 - **Resilient JSON Normalization**: Validates schema and auto-repairs code fences and trailing commas.
 
 ---
