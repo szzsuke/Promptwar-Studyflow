@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "npm --prefix client run dev",
     "dev:client": "npm --prefix client run dev",
-    "dev:server": "node server/server.js",
     "postinstall": "npm --prefix client install",
     "build": "npm --prefix client install && npm --prefix client run build",
     "preview": "npm --prefix client run preview",
