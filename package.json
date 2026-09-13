@@ -1,0 +1,14 @@
+{
+  "name": "studyflow-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "StudyFlow — Standalone AI Learning Workbench with In-Browser RAG",
+  "scripts": {
+    "dev": "npm --prefix client run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "node server/server.js",
+    "build": "npm --prefix client run build",
+    "preview": "npm --prefix client run preview",
+    "test": "npm --prefix client run build"
+  }
+}
