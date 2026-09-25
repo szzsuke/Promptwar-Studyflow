@@ -1,5 +1,7 @@
 # StudyFlow: Standalone AI Learning Workbench
 
+made using AI (ANTIGRAVITY) Using only prompts
+
 StudyFlow is a local-first, serverless AI study workbench designed with the **DeepStudent** visual system. Students upload a lecture PDF and immediately receive:
 1. **Condensed Revision Notes** structured into high-yield bullet points organized by sub-topic.
 2. **An Interactive 5-Question Multiple-Choice Quiz** with instant right/wrong evaluation, correct answer highlights, and grounded explanations.
